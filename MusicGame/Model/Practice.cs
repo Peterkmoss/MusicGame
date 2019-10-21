@@ -1,6 +1,6 @@
 namespace Model
 {
-    public class Practice : Event
+    public class Practice : Activity
     {
 
     }

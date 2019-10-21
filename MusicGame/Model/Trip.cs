@@ -1,6 +1,6 @@
 namespace Model
 {
-    public class Trip : Event
+    public class Trip : Activity
     {
         public string Location { get; private set; }
         public int Price { get; private set; }

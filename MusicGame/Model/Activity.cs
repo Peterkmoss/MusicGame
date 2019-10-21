@@ -1,6 +1,6 @@
 namespace Model
 {
-    public abstract class Event
+    public abstract class Activity
     {
         public int Duration { get; private set; }
     }
