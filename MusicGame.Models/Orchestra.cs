@@ -1,10 +1,11 @@
 using System.Collections.Generic;
-namespace Model
+namespace MusicGame.Models
 {
     public class Orchestra : IOrchestra
     {
         public int Experience { get; private set; }
         public ISet<Musician> Musicians { get; private set; }
+        public ISet<Activity> UnusedActivities { get; private set; }
         public Room PracticeRoom { get; private set; }
         public string Name { get; set; }
         public int Budget { get; private set; }
@@ -31,12 +32,13 @@ namespace Model
 
         public void BuyMusician(Musician musician)
         {
-            throw new System.NotImplementedException();
+            Musicians.Add(musician);
+            Budget -= musician.Price;
         }
 
-        public void BuyEvent(Activity activity)
+        public void BuyActivity(Activity activity)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void BuyPracticeRoom(Room practiceRoom)

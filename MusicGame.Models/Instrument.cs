@@ -1,4 +1,4 @@
-namespace Model
+namespace MusicGame.Models
 {
     public enum Instrument
     {

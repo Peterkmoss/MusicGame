@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Model
+namespace MusicGame.Models
 {
     public class Musician
     {
