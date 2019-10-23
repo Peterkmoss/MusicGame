@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MusicGame.Models\MusicGame.Models.csproj" />
+    <ProjectReference Include="..\MusicGame.Controllers\Controller.csproj" />
   </ItemGroup>
 
 </Project>
