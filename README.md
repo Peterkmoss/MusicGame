@@ -4,7 +4,23 @@
 - The player is both the conductor and the manager
 
 ## Orchestra
-- 
+- Properties
+  - Name
+  - Musicians
+  - Activities
+  - Experience
+  - Budget
+  - Practice room (can be upgraded to add space for more musicians in the orchestra)
+  - Practiced hours (with limit)
+  - Schedule (weekly)
+  - Policies
+    - Tune before playing
+    - Cake list
+    - Etc.
+- Unlocks new musicians (instruments and levels) as the experience goes up
+- Can win prizes
+- Price should be taken from the orchestra's budget and experience should be added to the orchestra's experience
+- When running a scheduled week it should check if the orchestra has enough hours practiced
 
 ## Musicians
 - Some are more difficult to get a hold of than others
@@ -14,6 +30,7 @@
   - Levels
   - Price
 - Hired for in-game currency
+- Good musicians will make less mistakes and add profit when performing concerts
 
 ### Soloist
 - One time purchase for the orchestra (can be bought again)
@@ -42,6 +59,7 @@
 #### Trip
 - Location is a place
 - Price
+- Limit on amount of trips in a certain time
 
 #### Concert
 - Location is a scene
@@ -53,22 +71,5 @@
   - Missing bows, dynamics, etc.
   - Handwritten or bad print
 
-- Rangering af orkesteret
-- Låser op for nye instrumenter
-- Vinde priser
-- Aktiviteter:
-    - Prøve (Gratis)
-    - 
-- Prøve, orkestertur (limit)
-    - Koster penge
-- Planlæg uge
-- Gode musikere = færre fejl
-- Politikker i orkesteret
-    - Stemme inden spil
-    - Kageliste 
-    - m.m.
-- Prøvested skal opgraderes for at få flere musikere med
-- Alle musikere skal have et navn og små quirks
-- Egen valuta, Musicoins (?)
-- Price should be taken from the orchestra's budget and experience should be added to the orchestra's experience
-- When running a scheduled week it should check if the orchestra has enough hours practiced
+## Other
+- In-game currency: Musicoins
