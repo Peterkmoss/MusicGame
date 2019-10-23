@@ -43,7 +43,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_concert_added_to_unusedActivities()
         {
-            var concert = new Concert("TestLocation",100,50,0,100);
+            var concert = new Concert("TestLocation", 100, 50, 0, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(concert);
@@ -54,7 +54,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_trip_added_to_unusedActivities()
         {
-            var trip = new Trip("TestLocation",100,100);
+            var trip = new Trip("TestLocation", 100, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(trip);
@@ -65,7 +65,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_trip_price_removed_from_budget()
         {
-            var trip = new Trip("TestLocation",100,100);
+            var trip = new Trip("TestLocation", 100, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(trip);
@@ -76,7 +76,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_trip_experience_added_to_orchestra()
         {
-            var trip = new Trip("TestLocation",100,100);
+            var trip = new Trip("TestLocation", 100, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(trip);
@@ -84,10 +84,10 @@ namespace MusicGame.Models.Tests
             Assert.Equal(100, orchestra.Experience);
         }
 
-         [Fact]
+        [Fact]
         public void BuyActivity_given_concert_price_budget_changed_with_price_and_revenue()
         {
-            var concert = new Concert("TestLocation",100,50,0,100);
+            var concert = new Concert("TestLocation", 100, 50, 0, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(concert);
@@ -98,7 +98,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_concert_experience_added_to_orchestra()
         {
-            var concert = new Concert("TestLocation",100,50,0,100);
+            var concert = new Concert("TestLocation", 100, 50, 0, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyActivity(concert);
@@ -109,7 +109,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_concert_not_enough_experience_throws_exception()
         {
-            var concert = new Concert("TestLocation",100,50,1,100);
+            var concert = new Concert("TestLocation", 100, 50, 1, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             Assert.Throws<NotEnoughExperienceException>(() => orchestra.BuyActivity(concert));
@@ -118,7 +118,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_concert_not_enough_money_throws_exception()
         {
-            var concert = new Concert("TestLocation",1001,50,1,100);
+            var concert = new Concert("TestLocation", 1001, 50, 1, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyActivity(concert));
@@ -127,7 +127,7 @@ namespace MusicGame.Models.Tests
         [Fact]
         public void BuyActivity_given_trip_not_enough_money_throws_exception()
         {
-            var concert = new Trip("TestLocation",1001, 100);
+            var concert = new Trip("TestLocation", 1001, 100);
             var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyActivity(concert));
