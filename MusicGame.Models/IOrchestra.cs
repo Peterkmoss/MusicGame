@@ -11,6 +11,6 @@ namespace MusicGame.Models
         void BuyTrip(Trip activity);
         void BuyConcert(Concert activity);
         void BuyPracticeRoom(Room practiceRoom);
-        void UpdateSchedule(int day, IList<Activity> activities);
+        void UpdateSchedule(int day, Activity activities);
     }
 }

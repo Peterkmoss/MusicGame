@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MusicGame.Models.Activities;
 using MusicGame.Models.Exceptions;
@@ -12,11 +13,11 @@ namespace MusicGame.Models
         public Room PracticeRoom { get; private set; }
         public string Name { get; set; }
         public int Budget { get; private set; }
-        public IDictionary<int, IList<Activity>> Schedule { get; private set; }
+        public IDictionary<int, Activity> Schedule { get; private set; }
         public int WeeklyHours { get; private set; }
         public int PracticeHours { get; private set; }
 
-        public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, IList<Activity>> schedule, ISet<Activity> activities)
+        public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, Activity> schedule, ISet<Activity> activities)
         {
             Experience = 0;
             Musicians = musicians;
@@ -57,16 +58,10 @@ namespace MusicGame.Models
         }
         public void BuyConcert(Concert concert)
         {
-            if (Budget >= concert.Price)
-            {
-                if (Experience >= concert.RequiredExperience)
-                {
-                    Budget -= concert.Price;
-                    UnusedActivities.Add(concert);
-                }
-                else throw new NotEnoughExperienceException();
-            }
-            else throw new NotEnoughMoneyException();
+            if (Budget < concert.Price) throw new NotEnoughMoneyException();
+            if (Experience < concert.RequiredExperience) throw new NotEnoughExperienceException();
+            Budget -= concert.Price;
+            UnusedActivities.Add(concert);
         }
 
         public void BuyPracticeRoom(Room practiceRoom)
@@ -74,9 +69,15 @@ namespace MusicGame.Models
             throw new System.NotImplementedException();
         }
 
-        public void UpdateSchedule(int day, IList<Activity> activities)
+        public void UpdateSchedule(int day, Activity activity)
         {
-            throw new System.NotImplementedException();
+            if (day >= Schedule.Count) throw new IndexOutOfRangeException();
+            if (!UnusedActivities.Contains(activity)) throw new NullReferenceException();
+            var current = Schedule[day];
+            if (current != null)
+                UnusedActivities.Add(current);
+            UnusedActivities.Remove(activity);
+            Schedule[day] = activity;
         }
     }
 }
