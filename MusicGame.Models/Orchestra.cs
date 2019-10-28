@@ -1,4 +1,7 @@
 using System.Collections.Generic;
+using MusicGame.Models.Activities;
+using MusicGame.Models.Exceptions;
+
 namespace MusicGame.Models
 {
     public class Orchestra : IOrchestra
@@ -13,7 +16,7 @@ namespace MusicGame.Models
         public int WeeklyHours { get; private set; }
         public int PracticeHours { get; private set; }
 
-        public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, IList<Activity>> schedule)
+        public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, IList<Activity>> schedule, ISet<Activity> activities)
         {
             Experience = 0;
             Musicians = musicians;
@@ -23,6 +26,7 @@ namespace MusicGame.Models
             Schedule = schedule;
             WeeklyHours = 1;
             PracticeHours = 0;
+            UnusedActivities = activities;
         }
 
         public void RunScheduledWeek()
@@ -36,9 +40,33 @@ namespace MusicGame.Models
             Budget -= musician.Price;
         }
 
-        public void BuyActivity(Activity activity)
+        public void BuyPractice(Practice practice)
         {
+            UnusedActivities.Add(practice);
+        }
 
+        public void BuyTrip(Trip trip)
+        {
+            if (Budget >= trip.Price)
+            {
+                Budget -= trip.Price;
+                UnusedActivities.Add(trip);
+            }
+            else throw new NotEnoughMoneyException();
+
+        }
+        public void BuyConcert(Concert concert)
+        {
+            if (Budget >= concert.Price)
+            {
+                if (Experience >= concert.RequiredExperience)
+                {
+                    Budget -= concert.Price;
+                    UnusedActivities.Add(concert);
+                }
+                else throw new NotEnoughExperienceException();
+            }
+            else throw new NotEnoughMoneyException();
         }
 
         public void BuyPracticeRoom(Room practiceRoom)

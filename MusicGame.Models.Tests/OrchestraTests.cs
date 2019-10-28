@@ -2,16 +2,23 @@ using System.Collections.Generic;
 using System;
 using Xunit;
 using MusicGame.Models.Exceptions;
+using MusicGame.Models.Activities;
 
 namespace MusicGame.Models.Tests
 {
     public class OrchestraTests
     {
+        Orchestra orchestra;
+
+        public OrchestraTests()
+        {
+            orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>(), new HashSet<Activity>());
+        }
+
         [Fact]
         public void BuyMusician_given_musician_adds_musician_to_orchestra()
         {
             var musician = new Musician("Musician", Instrument.Basoon, "Loves tests", 3, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyMusician(musician);
 
@@ -22,7 +29,6 @@ namespace MusicGame.Models.Tests
         public void BuyMusician_given_musician_removes_price_from_budget()
         {
             var musician = new Musician("Musician", Instrument.Basoon, "Loves tests", 3, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
 
             orchestra.BuyMusician(musician);
 
@@ -30,107 +36,95 @@ namespace MusicGame.Models.Tests
         }
 
         [Fact]
-        public void BuyActivity_given_practice_added_to_unusedActivities()
+        public void BuyPractice_added_to_unusedActivities()
         {
-            var practice = new Practice();
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var practice = new Practice(1);
 
-            orchestra.BuyActivity(practice);
+            orchestra.BuyPractice(practice);
 
-            Assert.True(orchestra.UnusedActivities.Contains(practice));
+            Assert.Contains(practice, orchestra.UnusedActivities);
         }
 
         [Fact]
-        public void BuyActivity_given_concert_added_to_unusedActivities()
+        public void BuyConcert_added_to_unusedActivities()
         {
-            var concert = new Concert("TestLocation", 100, 50, 0, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var concert = new Concert(1, 0, "TestLocation", 0, 0, 0);
 
-            orchestra.BuyActivity(concert);
+            orchestra.BuyConcert(concert);
 
-            Assert.True(orchestra.UnusedActivities.Contains(concert));
+            Assert.Contains(concert, orchestra.UnusedActivities);
         }
 
         [Fact]
-        public void BuyActivity_given_trip_added_to_unusedActivities()
+        public void BuyTrip_added_to_unusedActivities()
         {
-            var trip = new Trip("TestLocation", 100, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var trip = new Trip(1, 0, "TestLocation", 0);
 
-            orchestra.BuyActivity(trip);
+            orchestra.BuyTrip(trip);
 
-            Assert.True(orchestra.UnusedActivities.Contains(trip));
+            Assert.Contains(trip, orchestra.UnusedActivities);
         }
 
-        [Fact]
-        public void BuyActivity_given_trip_price_removed_from_budget()
+        [Theory]
+        [InlineData(100, 900)]
+        [InlineData(50, 950)]
+        [InlineData(1000, 0)]
+        [InlineData(500, 500)]
+        public void BuyTrip_price_removed_from_budget(int price, int newBudget)
         {
-            var trip = new Trip("TestLocation", 100, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var trip = new Trip(1, price, "TestLocation", 0);
 
-            orchestra.BuyActivity(trip);
+            orchestra.BuyTrip(trip);
 
-            Assert.Equal(900, orchestra.Budget);
+            Assert.Equal(newBudget, orchestra.Budget);
         }
 
-        [Fact]
-        public void BuyActivity_given_trip_experience_added_to_orchestra()
+        [Theory]
+        [InlineData(100, 900)]
+        [InlineData(50, 950)]
+        [InlineData(1000, 0)]
+        [InlineData(500, 500)]
+        public void BuyConcert_price_removed_from_budget(int price, int newBudget)
         {
-            var trip = new Trip("TestLocation", 100, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var concert = new Concert(1, price, "TestLocation", 0, 0, 0);
 
-            orchestra.BuyActivity(trip);
+            orchestra.BuyConcert(concert);
 
-            Assert.Equal(100, orchestra.Experience);
+            Assert.Equal(newBudget, orchestra.Budget);
         }
 
-        [Fact]
-        public void BuyActivity_given_concert_price_budget_changed_with_price_and_revenue()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(100)]
+        [InlineData(500)]
+        [InlineData(1000)]
+        public void BuyConcert_not_enough_experience_throws_exception(int requiredExperience)
         {
-            var concert = new Concert("TestLocation", 100, 50, 0, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var concert = new Concert(1, 0, "TestLocation", 0, 0, requiredExperience);
 
-            orchestra.BuyActivity(concert);
-
-            Assert.Equal(950, orchestra.Budget);
+            Assert.Throws<NotEnoughExperienceException>(() => orchestra.BuyConcert(concert));
         }
 
-        [Fact]
-        public void BuyActivity_given_concert_experience_added_to_orchestra()
+        [Theory]
+        [InlineData(1001)]
+        [InlineData(2000)]
+        [InlineData(5000)]
+        public void BuyConcert_not_enough_money_throws_exception(int price)
         {
-            var concert = new Concert("TestLocation", 100, 50, 0, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var concert = new Concert(1, price, "TestLocation", 0, 0, 0);
 
-            orchestra.BuyActivity(concert);
-
-            Assert.Equal(100, orchestra.Experience);
+            Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyConcert(concert));
         }
 
-        [Fact]
-        public void BuyActivity_given_concert_not_enough_experience_throws_exception()
+        [Theory]
+        [InlineData(1001)]
+        [InlineData(2000)]
+        [InlineData(5000)]
+        public void BuyTrip_not_enough_money_throws_exception(int price)
         {
-            var concert = new Concert("TestLocation", 100, 50, 1, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
+            var trip = new Trip(1, price, "TestLocation", 0);
 
-            Assert.Throws<NotEnoughExperienceException>(() => orchestra.BuyActivity(concert));
-        }
-
-        [Fact]
-        public void BuyActivity_given_concert_not_enough_money_throws_exception()
-        {
-            var concert = new Concert("TestLocation", 1001, 50, 1, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
-
-            Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyActivity(concert));
-        }
-
-        [Fact]
-        public void BuyActivity_given_trip_not_enough_money_throws_exception()
-        {
-            var concert = new Trip("TestLocation", 1001, 100);
-            var orchestra = new Orchestra("Test", new HashSet<Musician>(), new Dictionary<int, IList<Activity>>());
-
-            Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyActivity(concert));
+            Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyTrip(trip));
         }
     }
 }
