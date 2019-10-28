@@ -21,7 +21,7 @@ namespace MusicGame.Models
         {
             Experience = 0;
             Musicians = musicians;
-            PracticeRoom = new Room();
+            PracticeRoom = new Room(3, 0, "The smallest room at a very small music school - it even smells a bit");
             Name = name;
             Budget = 1000;
             Schedule = schedule;
@@ -66,7 +66,10 @@ namespace MusicGame.Models
 
         public void BuyPracticeRoom(Room practiceRoom)
         {
-            throw new System.NotImplementedException();
+            if(practiceRoom.Price > Budget) throw new NotEnoughMoneyException();
+            if(practiceRoom.Size < Musicians.Count) throw new NotEnoughSpaceException();
+            Budget -= practiceRoom.Price;
+            PracticeRoom = practiceRoom;
         }
 
         public void UpdateSchedule(int day, Activity activity)

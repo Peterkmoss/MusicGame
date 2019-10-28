@@ -196,5 +196,50 @@ namespace MusicGame.Models.Tests
 
             Assert.Throws<NullReferenceException>(() => orchestra.UpdateSchedule(0, activity));
         }
+
+        [Theory]
+        [InlineData(1, 999)]
+        [InlineData(100, 900)]
+        [InlineData(500, 500)]
+        [InlineData(1000, 0)]
+        public void BuyPracticeRoom_removes_money(int price, int expected)
+        {
+            var room = new Room(1, price, "TestLocation");
+
+            orchestra.BuyPracticeRoom(room);
+
+            Assert.Equal(expected, orchestra.Budget);
+        }
+
+        [Fact]
+        public void BuyPracticeRoom_not_enough_money_throws_exception()
+        {
+            var room = new Room(1, 1001, "TestLocation");
+
+            Assert.Throws<NotEnoughMoneyException>(() => orchestra.BuyPracticeRoom(room));
+        }
+
+        [Fact]
+        public void BuyPracticeRoom_not_big_enough_throws_exception()
+        {
+            var musician1 = new Musician("Peter", Instrument.Basoon, "Loves tests", 1, 0);
+            var musician2 = new Musician("Mie", Instrument.Oboe, "Testing", 1, 0);
+            orchestra.BuyMusician(musician1);
+            orchestra.BuyMusician(musician2);
+
+            var room = new Room(1, 1, "TestLocation");
+
+            Assert.Throws<NotEnoughSpaceException>(() => orchestra.BuyPracticeRoom(room));
+        }
+
+        [Fact]
+        public void BuyPracticeRoom_updates_practice_room()
+        {
+            var room = new Room(1, 1, "TestLocation");
+
+            orchestra.BuyPracticeRoom(room);
+
+            Assert.Equal(room, orchestra.PracticeRoom);
+        }
     }
 }
