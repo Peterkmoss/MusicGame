@@ -14,8 +14,8 @@ namespace MusicGame.Models
         public string Name { get; set; }
         public int Budget { get; private set; }
         public IDictionary<int, Activity> Schedule { get; private set; }
-        public int WeeklyHours { get; private set; }
-        public int PracticeHours { get; private set; }
+        public int WeeklyMinutes { get; private set; }
+        public int PracticeMinutes { get; private set; }
         public int RequiredPracticeForConcert { get; private set; }
 
         public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, Activity> schedule, ISet<Activity> activities)
@@ -26,8 +26,8 @@ namespace MusicGame.Models
             Name = name;
             Budget = 1000;
             Schedule = schedule;
-            WeeklyHours = 1;
-            PracticeHours = 0;
+            WeeklyMinutes = 1;
+            PracticeMinutes = 0;
             UnusedActivities = activities;
             RequiredPracticeForConcert = 2;
         }

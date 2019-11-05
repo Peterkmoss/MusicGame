@@ -242,22 +242,48 @@ namespace MusicGame.Models.Tests
             Assert.Equal(room, orchestra.PracticeRoom);
         }
 
-        [Fact]
-        public void RunScheduledWeek_updates_practicehours()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(5)]
+        [InlineData(10)]
+        [InlineData(60)]
+        [InlineData(120)]
+        public void RunScheduledWeek_updates_PracticeMinutes(int minutes)
         {
+            orchestra.Schedule[1] = new Practice(minutes);
 
+            orchestra.RunScheduledWeek();
+
+            Assert.Equal(minutes, orchestra.PracticeMinutes);
         }
 
-        [Fact]
-        public void RunScheduledWeek_with_concert_updates_experience()
+        [Theory]
+        [InlineData(100)]
+        [InlineData(1000)]
+        [InlineData(2000)]
+        [InlineData(5000)]
+        public void RunScheduledWeek_with_concert_updates_Experience(int experience)
         {
+            orchestra.Schedule[1] = new Concert(0, 0, "Test", experience, 0, 0);
 
+            orchestra.RunScheduledWeek();
+
+            Assert.Equal(experience, orchestra.Experience);
         }
 
-        [Fact]
-        public void RunScheduledWeek_with_concert_updates_budget()
+        [Theory]
+        [InlineData(100, 200, 1100)]
+        [InlineData(50, 200, 1150)]
+        [InlineData(0, 200, 1200)]
+        [InlineData(100, 0, 900)]
+        [InlineData(100, 50, 1050)]
+        public void RunScheduledWeek_with_concert_updates_Budget(int price, int revenue, int expected)
         {
+            orchestra.Schedule[1] = new Concert(0, price, "Test", 0, revenue, 0);
 
+            orchestra.RunScheduledWeek();
+
+            Assert.Equal(expected, orchestra.Budget);
         }
 
         [Theory]
@@ -300,14 +326,8 @@ namespace MusicGame.Models.Tests
 
             orchestra.Schedule[0] = new Concert(0, 0, "Test", 0, 0, 0);
            
-            Assert.Equal(newValue, orchestra.PracticeHours);
+            Assert.Equal(newValue, orchestra.PracticeMinutes);
 
         }
-
-
-
-
-
-
     }
 }
