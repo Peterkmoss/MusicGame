@@ -260,25 +260,53 @@ namespace MusicGame.Models.Tests
 
         }
 
-        [Fact]
-        public void RunScheduledWeek_with_trip_updates_experience()
+        [Theory]
+        [InlineData(1)]
+        [InlineData(50)]
+        [InlineData(99)]
+        [InlineData(200)]
+        [InlineData(1000)]
+        public void RunScheduledWeek_with_trip_updates_experience(int experience)
         {
+            var trip = new Trip(1, 0, "Test", experience);
+            orchestra.Schedule[1] = trip;
+            orchestra.RunScheduledWeek();
 
+            Assert.Equal(experience, orchestra.Experience);
         }
 
         [Fact]
         public void RunScheduledWeek_clears_schedule()
         {
+            orchestra.Schedule[1] = new Trip(1, 1, "Test", 1);
+            orchestra.Schedule[2] = new Practice(1);
 
+            orchestra.RunScheduledWeek();
+
+            Assert.Empty(orchestra.Schedule);
         }
 
-        [Fact]
-        public void RunScheduledWeek_resets_practiceHours()
+        [Theory]
+        [InlineData(5, 3)]
+        [InlineData(10, 8)]
+        [InlineData(100, 98)]
+        [InlineData(1000, 998)]
+        public void RunScheduledWeek_with_concert_subtracts_requiredPracticeForConcert(int duration, int newValue)
         {
+            
+            orchestra.Schedule[1] = new Practice(duration);
+
+            orchestra.RunScheduledWeek();
+
+            orchestra.Schedule[0] = new Concert(0, 0, "Test", 0, 0, 0);
+           
+            Assert.Equal(newValue, orchestra.PracticeHours);
 
         }
 
-        
+
+
+
 
 
     }
