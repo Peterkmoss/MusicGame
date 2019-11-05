@@ -16,6 +16,7 @@ namespace MusicGame.Models
         public IDictionary<int, Activity> Schedule { get; private set; }
         public int WeeklyHours { get; private set; }
         public int PracticeHours { get; private set; }
+        public int RequiredPracticeForConcert { get; private set; }
 
         public Orchestra(string name, ISet<Musician> musicians, IDictionary<int, Activity> schedule, ISet<Activity> activities)
         {
@@ -28,6 +29,7 @@ namespace MusicGame.Models
             WeeklyHours = 1;
             PracticeHours = 0;
             UnusedActivities = activities;
+            RequiredPracticeForConcert = 2;
         }
 
         public void RunScheduledWeek()
@@ -66,8 +68,8 @@ namespace MusicGame.Models
 
         public void BuyPracticeRoom(Room practiceRoom)
         {
-            if(practiceRoom.Price > Budget) throw new NotEnoughMoneyException();
-            if(practiceRoom.Size < Musicians.Count) throw new NotEnoughSpaceException();
+            if (practiceRoom.Price > Budget) throw new NotEnoughMoneyException();
+            if (practiceRoom.Size < Musicians.Count) throw new NotEnoughSpaceException();
             Budget -= practiceRoom.Price;
             PracticeRoom = practiceRoom;
         }

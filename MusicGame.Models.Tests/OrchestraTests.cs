@@ -241,5 +241,45 @@ namespace MusicGame.Models.Tests
 
             Assert.Equal(room, orchestra.PracticeRoom);
         }
+
+        [Fact]
+        public void RunScheduledWeek_updates_practicehours()
+        {
+
+        }
+
+        [Fact]
+        public void RunScheduledWeek_with_concert_updates_experience()
+        {
+
+        }
+
+        [Fact]
+        public void RunScheduledWeek_with_concert_updates_budget()
+        {
+
+        }
+
+        [Fact]
+        public void RunScheduledWeek_with_trip_updates_experience()
+        {
+
+        }
+
+        [Fact]
+        public void RunScheduledWeek_clears_schedule()
+        {
+
+        }
+
+        [Fact]
+        public void RunScheduledWeek_resets_practiceHours()
+        {
+
+        }
+
+        
+
+
     }
 }
