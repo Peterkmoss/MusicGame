@@ -5,7 +5,6 @@ namespace MusicGame.Models
 {
     public interface IOrchestra
     {
-        void RunScheduledWeek();
         void BuyMusician(Musician musician);
         void BuyPractice(Practice activity);
         void BuyTrip(Trip activity);
