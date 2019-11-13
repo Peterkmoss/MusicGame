@@ -32,11 +32,6 @@ namespace MusicGame.Models
             RequiredPracticeForConcert = 2;
         }
 
-        public void RunScheduledWeek()
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void BuyMusician(Musician musician)
         {
             Musicians.Add(musician);
