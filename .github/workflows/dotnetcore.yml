@@ -14,9 +14,4 @@ jobs:
       with:
         dotnet-version: 2.2.108
     - name: Build with dotnet
-      run: dotnet build --configuration Release
-  test:
-    runs-on: [ubuntu-latest]
-    steps:
-      - name: Test suite
-        run: dotnet test
+      run: dotnet build
